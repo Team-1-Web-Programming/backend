@@ -18,4 +18,13 @@ class DonationCategory extends Model
         'parent_id',
         'title'
     ];
+
+    public static function generateTree(int|null $parent_id = null)
+    {
+        $data = DonationCategory::where('parent_id', $parent_id)->get();
+        foreach ($data as $item) {
+            $item->children = DonationCategory::generateTree($item->id);
+        }
+        return $data;
+    }
 }

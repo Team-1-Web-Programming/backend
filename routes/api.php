@@ -30,13 +30,6 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
             Route::delete('/{id}', [DonationProductController::class, 'delete']);
         });
 
-        Route::group(['prefix' => 'category'], function () {
-            Route::get('/', [DonationCategoryController::class, 'index']);
-            Route::post('/', [DonationCategoryController::class, 'add']);
-            Route::put('/{id}', [DonationCategoryController::class, 'edit']);
-            Route::delete('/{id}', [DonationCategoryController::class, 'delete']);
-        });
-
         Route::group(['prefix' => 'analytics'], function () {
             Route::get('/', [DonationAnalyticsController::class, 'index']);
         });
@@ -53,6 +46,18 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
     
     Route::post('/',[UserController::class, 'update']);
 
+});
+
+Route::group(['prefix' => 'donation'], function () {
+    Route::group(['prefix' => 'category'], function () {
+        Route::get('/', [DonationCategoryController::class, 'index']);
+
+        Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
+            Route::post('/', [DonationCategoryController::class, 'add']);
+            Route::post('/{id}', [DonationCategoryController::class, 'edit']);
+            Route::delete('/{id}', [DonationCategoryController::class, 'delete']);
+        });
+    });
 });
 
 Route::get('/token', function (Request $request) {
