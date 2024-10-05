@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class DonationProduct extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'address_id',
+        'title',
+        'description',
+        'amount'
+    ];
 }
