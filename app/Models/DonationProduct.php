@@ -21,4 +21,29 @@ class DonationProduct extends Model
         'description',
         'amount'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+
+    public function donationProductCategory()
+    {
+        return $this->hasMany(DonationProductCategory::class);
+    }
+
+    public function donationCategory()
+    {
+        return $this->belongsToMany(DonationCategory::class, 'donation_product_categories');
+    }
+
+    public function donationProductMedia()
+    {
+        return $this->hasMany(DonationProductMedia::class);
+    }
 }

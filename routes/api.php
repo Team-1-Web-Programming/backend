@@ -23,10 +23,10 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'donation'], function () {
 
         Route::group(['prefix' => 'product'], function () {
-            Route::get('/', [DonationProductController::class, 'index']);
-            Route::get('/{id}', [DonationProductController::class, 'detail']);
+            Route::get('/', [DonationProductController::class, 'donor_products']);
+            Route::get('/{id}', [DonationProductController::class, 'donor_detail']);
             Route::post('/', [DonationProductController::class, 'add']);
-            Route::put('/{id}', [DonationProductController::class, 'edit']);
+            Route::post('/{id}', [DonationProductController::class, 'edit']);
             Route::delete('/{id}', [DonationProductController::class, 'delete']);
         });
 
@@ -49,6 +49,12 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
 });
 
 Route::group(['prefix' => 'donation'], function () {
+
+    Route::group(['prefix' => 'product'], function () {
+        Route::get('/', [DonationProductController::class, 'index']);
+        Route::get('/{id}', [DonationProductController::class, 'detail']);
+    });
+    
     Route::group(['prefix' => 'category'], function () {
         Route::get('/', [DonationCategoryController::class, 'index']);
 
