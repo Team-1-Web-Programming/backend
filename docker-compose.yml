@@ -31,6 +31,7 @@ services:
     volumes:
       - app-storage:/usr/share/nginx/html/storage
       - app-public-uploads:/usr/share/nginx/html/public/uploads
+      - ./.env:/usr/share/nginx/html/.env
     depends_on:
       db:
         condition: service_healthy
