@@ -77,7 +77,7 @@ Route::group(['prefix' => 'donation'], function () {
 });
 
 Route::get('/token', function (Request $request) {
-    $token = $request->session()->token();
+    $token = session()->token();
 
     return response()->json([
         'token' => $token,
