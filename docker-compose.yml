@@ -19,8 +19,7 @@ services:
           exit 1
         fi
 
-        php artisan key:generate \
-            && php artisan config:cache \
+        php artisan config:cache \
             && php artisan route:cache \
             && php artisan view:cache \
             && /start.sh
