@@ -19,8 +19,7 @@ services:
           exit 1
         fi
 
-        php artisan migrate --force \
-            && php artisan key:generate \
+        php artisan key:generate \
             && php artisan cache:clear \
             && php artisan config:cache \
             && php artisan route:cache \
