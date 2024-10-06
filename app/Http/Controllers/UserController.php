@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -38,6 +39,9 @@ class UserController extends Controller
             $file->move($this->photo_profile_path, $filename);
 
             $request->user()->photo_profile = $filename;
+        }
+        else if (Arr::has($request->all(), 'photo_profile')) {
+            $request->user()->photo_profile = null;
         }
 
         if ($request->has('name')) {

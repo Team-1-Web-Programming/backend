@@ -115,7 +115,7 @@ class Donation extends Model
             throw new \Exception('You can not cancel someone else donation', 400);
         }
 
-        if (!in_array($this->status, ['requested', 'confirmed', 'taken'])) {
+        if (!in_array($this->status, ['requested', 'confirmed'])) {
             throw new \Exception('Donation status can not be canceled', 400);
         }
 
@@ -126,6 +126,16 @@ class Donation extends Model
         $this->product->update([
             'amount' => $this->product->amount + $this->amount
         ]);
+    }
+
+    public function donor()
+    {
+        return $this->belongsTo(User::class, 'donor_id');
+    }
+
+    public function donee()
+    {
+        return $this->belongsTo(User::class, 'donee_id');
     }
 
     public function product()

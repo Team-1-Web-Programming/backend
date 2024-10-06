@@ -12,8 +12,30 @@ class DonationController extends Controller
 {
     public function index(Request $request)
     {
-        $data = $request->user()->donations;
-        return $data;
+        $donations = $request->user()->donations;
+        $donations->load('donor', 'donee', 'product');
+        $donations->load('product.donationProductMedia');
+        $donations = $donations->toArray();
+
+        foreach ($donations as $donation_key => $donation) {
+            if ($donation['donor']['photo_profile']) {
+                $donations[$donation_key]['donor']['photo_profile'] = $this->getFileUploadedResize(public_path($this->photoProfilePath($donation['donor']['id'])) . '/' . $donation['donor']['photo_profile'], 50);
+            }
+    
+            if ($donation['donee']['photo_profile']) {
+                $donations[$donation_key]['donee']['photo_profile'] = $this->getFileUploadedResize(public_path($this->photoProfilePath($donation['donee']['id'])) . '/' . $donation['donee']['photo_profile'], 50);
+            }
+    
+            if ($donation['product']['donation_product_media']) {
+                foreach ($donation['product']['donation_product_media'] as $media_key => $media) {
+                    if ($media['url']) {
+                        $donations[$donation_key]['product']['donation_product_media'][$media_key]['url'] = $this->getFileUploadedResize(public_path($this->mediaProductPath($donation['product']['user_id'])) . '/' . $media['url'], 200);
+                    }
+                }
+            }
+        }
+
+        return $donations;
     }
 
     public function detail(Request $request, $id)
@@ -37,11 +59,12 @@ class DonationController extends Controller
                 ])->setStatusCode(404);
             }
             
-            $data->claim($request->amount);
+            $donation = $data->claim($request->amount);
+            $donation->load('product');
 
             DB::commit();
 
-            return $data;
+            return $donation;
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
@@ -81,5 +104,15 @@ class DonationController extends Controller
                 'message' => $e->getMessage(),
             ])->setStatusCode($e->getCode() ?? 500);
         }
+    }
+
+    private function photoProfilePath($id)
+    {
+        return 'uploads/'.$id.'/profile';
+    }
+
+    private function mediaProductPath($id)
+    {
+        return 'uploads/'.$id.'/donation/product';
     }
 }

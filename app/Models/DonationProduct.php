@@ -57,7 +57,7 @@ class DonationProduct extends Model
             throw new \Exception('Amount is not enough', 400);
         }
 
-        Donation::create([
+        $donation = Donation::create([
             'donor_id' => $this->user_id,
             'donee_id' => auth('sanctum')->user()->id,
             'donation_product_id' => $this->id,
@@ -68,5 +68,7 @@ class DonationProduct extends Model
         $this->update([
             'amount' => $this->amount - $amount
         ]);
+
+        return $donation;
     }
 }
