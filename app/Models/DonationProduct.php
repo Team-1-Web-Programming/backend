@@ -46,4 +46,27 @@ class DonationProduct extends Model
     {
         return $this->hasMany(DonationProductMedia::class);
     }
+
+    public function claim($amount)
+    {
+        if ($this->user_id == auth('sanctum')->user()->id) {
+            throw new \Exception('You can not claim your own product', 400);
+        }
+
+        if ($this->amount < $amount) {
+            throw new \Exception('Amount is not enough', 400);
+        }
+
+        Donation::create([
+            'donor_id' => $this->user_id,
+            'donee_id' => auth('sanctum')->user()->id,
+            'donation_product_id' => $this->id,
+            'amount' => $amount,
+            'status' => 'requested',
+        ]);
+
+        $this->update([
+            'amount' => $this->amount - $amount
+        ]);
+    }
 }
