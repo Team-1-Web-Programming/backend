@@ -8,6 +8,7 @@ services:
     container_name: app
     restart: unless-stopped
     tty: true
+    user: root
     command: |
       bash -c '
         set -euo pipefail
@@ -19,7 +20,7 @@ services:
           exit 1
         fi
 
-        php artisan cache:clear \
+        php artisan config:clear \
             && php artisan config:cache \
             && php artisan route:cache \
             && php artisan view:cache \
@@ -32,7 +33,6 @@ services:
     volumes:
       - app-storage:/usr/share/nginx/html/storage
       - app-public-uploads:/usr/share/nginx/html/public/uploads
-      - ./.env:/usr/share/nginx/html/.env
     depends_on:
       db:
         condition: service_healthy
