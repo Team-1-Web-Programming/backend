@@ -20,7 +20,6 @@ services:
         fi
 
         php artisan key:generate \
-            && php artisan cache:clear \
             && php artisan config:cache \
             && php artisan route:cache \
             && php artisan view:cache \
@@ -31,7 +30,8 @@ services:
     ports:
       - 3780:80
     volumes:
-      - ./env:/var/www/html/.env:ro
+      - app-storage:/usr/share/nginx/html/storage
+      - app-public-uploads:/usr/share/nginx/html/public/uploads
     depends_on:
       db:
         condition: service_healthy
@@ -58,6 +58,8 @@ services:
 
 volumes:
   mysql-data:
+  app-storage:
+  app-public-uploads:
 
 networks:
   app-network:
