@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    command: |
+      bash -c '
+        set -euo pipefail
+
+        # env | grep ^APP__ | sed "s/^APP__//" > .env
+          
+        if [ ! -s .env ]; then
+          echo "cannot find dotenv file"
+          exit 1
+        fi
+
+        php artisan migrate --force \
+            && php artisan key:generate \
+            && php artisan cache:clear \
+            && php artisan config:cache \
+            && php artisan route:cache \
+            && php artisan view:cache \
+            && /start.sh
+      '
+    networks:
+      - app-network
+    ports:
+      - 3780:80
+    volumes:
+      - ./env:/var/www/html/.env:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_DATABASE: app
+      MYSQL_ROOT_PASSWORD: SekyurPaswot
+    networks:
+      - app-network
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+
+volumes:
+  mysql-data:
+
+networks:
+  app-network:
+    driver: bridge
