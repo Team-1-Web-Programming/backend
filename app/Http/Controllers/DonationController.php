@@ -40,8 +40,27 @@ class DonationController extends Controller
 
     public function detail(Request $request, $id)
     {
-        $data = $request->user()->donations->find($id);
-        return $data;
+        $donation = $request->user()->donations->find($id);
+        $donation->load('donor', 'donee', 'product');
+        $donation->load('product.donationProductMedia');
+
+        if ($donation['donor']['photo_profile']) {
+            $donation['donor']['photo_profile'] = $this->getFileUploadedResize(public_path($this->photoProfilePath($donation['donor']['id'])) . '/' . $donation['donor']['photo_profile'], 50);
+        }
+
+        if ($donation['donee']['photo_profile']) {
+            $donation['donee']['photo_profile'] = $this->getFileUploadedResize(public_path($this->photoProfilePath($donation['donee']['id'])) . '/' . $donation['donee']['photo_profile'], 50);
+        }
+
+        if ($donation['product']['donation_product_media']) {
+            foreach ($donation['product']['donation_product_media'] as $media_key => $media) {
+                if ($media['url']) {
+                    $donation['product']['donation_product_media'][$media_key]['url'] = $this->getFileUploadedResize(public_path($this->mediaProductPath($donation['product']['user_id'])) . '/' . $media['url'], 200);
+                }
+            }
+        }
+
+        return $donation;
     }
 
     public function claim(Request $request, $donation_product_id)
