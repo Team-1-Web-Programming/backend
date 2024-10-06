@@ -20,7 +20,7 @@ services:
         fi
 
         php artisan cache:clear \
-            && artisan config:cache \
+            && php artisan config:cache \
             && php artisan route:cache \
             && php artisan view:cache \
             && /start.sh
