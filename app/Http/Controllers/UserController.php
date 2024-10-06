@@ -17,7 +17,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $data = $request->user();
-        $data['photo_profile'] = $this->getFileUploadedResize(public_path($this->photo_profile_path) . '/' . $data['photo_profile'], 50);
+        if ($data->photo_profile) {
+            $data['photo_profile'] = $this->getFileUploadedResize(public_path($this->photo_profile_path) . '/' . $data['photo_profile'], 50);
+        }
         return $data;
     }
 
