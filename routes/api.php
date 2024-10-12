@@ -6,8 +6,19 @@ use App\Http\Controllers\DonationCategoryController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DonationProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BlogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+Route::prefix('blog')->group(function () {
+    Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
+        Route::get('/', [BlogController::class, 'index'])->name('blog.index');
+        Route::get('/{id}', [BlogController::class, 'show'])->name('blog.show');
+        Route::post('/', [BlogController::class, 'store'])->name('blog.store');
+        Route::put('/{id}', [BlogController::class, 'update'])->name('blog.update');
+        Route::delete('/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
+    });
+});
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
 

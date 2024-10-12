@@ -68,4 +68,9 @@ class User extends Authenticatable
         return $this->hasMany(Donation::class, 'donor_id', 'id')
             ->orWhere('donee_id', $this->id);
     }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
+    }
 }
