@@ -62,7 +62,6 @@ class BlogController extends Controller
             'title' => 'sometimes|required|string|max:255',
             'content' => 'sometimes|required',
             'cover_image' => 'nullable|url',
-            'date' => 'sometimes|required|date_format:Y-m-d H:i:s',
         ]);
 
         // Ensure only the author can update their own blog
@@ -70,9 +69,12 @@ class BlogController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        // Update the blog
-        $blog->update($validated);
-        return response()->json($blog);
+        $result = $blog->update($validated);
+        if ($result) {
+            return response()->json($blog, 200);
+        } else {
+            return response()->json(['message' => 'No changes detected'], 200);
+        }
     }
 
     // Delete a blog
