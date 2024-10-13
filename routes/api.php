@@ -47,7 +47,10 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
 
         Route::group(['prefix' => 'analytics'], function () {
 
-            Route::get('/', [DonationAnalyticsController::class, 'index']);
+            Route::get('/summary', [DonationAnalyticsController::class, 'getSummary'])->name('donation.summary');
+            Route::get('/analysis', [DonationAnalyticsController::class, 'getAnalysis'])->name('donation.analysis');
+            Route::get('/product-distribution', [DonationAnalyticsController::class, 'getProductDistribution'])->name('donation.productDistribution');
+            Route::get('/comparison', [DonationAnalyticsController::class, 'getComparison'])->name('donation.comparison');
 
         });
 
