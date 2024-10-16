@@ -22,11 +22,11 @@ console_command = 'php /var/www/html/artisan tinker'
   DB_CONNECTION = "mysql"
   DB_HOST = "mysql-lively-glade-933.internal"
   DB_DATABASE= "gunaulang"
-  APP_KEY=base64:JelAjb4lh/4PtiAnHewauJm5ysEqx7/BGgUcchpWv5Y=
+  APP_KEY="base64:JelAjb4lh/4PtiAnHewauJm5ysEqx7/BGgUcchpWv5Y="
   APP_TIMEZONE="Asia/Jakarta"
-  APP_URL=https://api-gunaulang.fly.dev
-  FRONTEND_URL=http://localhost:3000
-  SESSION_SAME_SITE=none
+  APP_URL="https://api-gunaulang.fly.dev"
+  FRONTEND_URL="http://localhost:3000"
+  SESSION_SAME_SITE="none"
 
 [http_service]
   internal_port = 8080
