@@ -14,10 +14,11 @@ Key features include:
 Make sure you have the following installed on your system:
 
 - [Git](https://git-scm.com/downloads)
-- [Rancher Desktop](https://rancherdesktop.io/) or [Docker](https://docs.docker.com/engine/install/)
+- [Docker](https://docs.docker.com/engine/install/)
+- [Docker Compose](https://docs.docker.com/compose/install/linux/)
 - [PHP 8.2](https://www.php.net/manual/en/install.php)
 - [PHP Composer](https://getcomposer.org/download/)
-- Copy the `.env.example` file to `.env` and update the values if needed (e.g., credentials, logs, etc).
+- Copy the `.env.example` file to `.env` and update the values ​​as necessary (e.g. credentials, logs, etc), leave the defaults to avoid failures when running [Quick Start](#quick-start).
 
 ### Quick Start
 
@@ -25,6 +26,7 @@ Run the following simple command:
 
 ```bash
 git clone https://github.com/Team-1-Web-Programming/backend
+cd backend
 docker compose -f docker-compose.dev.yml up -d
 composer install
 php artisan key:generate
