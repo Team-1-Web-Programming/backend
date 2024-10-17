@@ -13,7 +13,8 @@ console_command = 'php /var/www/html/artisan tinker'
     PHP_VERSION = '8.2'
 
 [env]
-  APP_ENV = 'production'
+  PORT="80"
+  APP_ENV = 'local'
   LOG_CHANNEL = 'stderr'
   LOG_LEVEL = 'info'
   LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
@@ -26,17 +27,21 @@ console_command = 'php /var/www/html/artisan tinker'
   APP_TIMEZONE="Asia/Jakarta"
   APP_URL="https://api-gunaulang.fly.dev"
   FRONTEND_URL="http://localhost:3000"
+  SESSION_DOMAIN="api-gunaulang.fly.dev"
   SESSION_SAME_SITE="none"
 
 [http_service]
-  internal_port = 8080
+  internal_port = 80
   force_https = true
-  auto_stop_machines = 'stop'
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ['app']
 
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
+
+[mounts]
+  source = "uploads_data"
+  destination = "/usr/share/nginx/html/public/uploads"
