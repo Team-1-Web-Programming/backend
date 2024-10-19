@@ -11,9 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('blog')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/{id}', [BlogController::class, 'show'])->name('blog.show');
     Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
-        Route::get('/', [BlogController::class, 'index'])->name('blog.index');
-        Route::get('/{id}', [BlogController::class, 'show'])->name('blog.show');
         Route::post('/', [BlogController::class, 'store'])->name('blog.store');
         Route::post('/{id}', [BlogController::class, 'update'])->name('blog.update');
         Route::delete('/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');

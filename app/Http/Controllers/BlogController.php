@@ -13,7 +13,7 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->query('per_page', 10);
-        $blogs = Blog::with('user')->orderBy('date', 'desc')->paginate($perPage);
+        $blogs = Blog::orderBy('date', 'desc')->paginate($perPage);
 
         return response()->json($blogs);
     }
@@ -21,7 +21,7 @@ class BlogController extends Controller
     // Show a specific blog
     public function show($id)
     {
-        $blog = Blog::with('user')->find($id);
+        $blog = Blog::find($id);
 
         if (!$blog) {
             return response()->json(['message' => 'Blog not found'], 404);
